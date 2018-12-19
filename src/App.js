@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import queryString from'query-string';
 
 let fakeServerData = {
 	user: {
@@ -8,35 +9,35 @@ let fakeServerData = {
 			{
 				name: 'My Favorites',
 				songs: [
-					{name: 'Beat It', duration: 1345} , 
-					{name: 'Cannelloni Makaroni', duration: 1236}, 
-					{name: 'Rosa helikopter', duration: 70000}
+					{name: 'Drummer Boy', duration: 120} , 
+					{name: 'Jingle Bells', duration: 240}, 
+					{name: 'White Christmas', duration: 480}
 				]
 			},
 			{
-				name: 'Discover Weekly',
+				name: 'Top',
 				songs: [
-					{name: 'Beat It', duration: 1345} , 
-					{name: 'Cannelloni Makaroni', duration: 1236}, 
-					{name: 'Rosa helikopter', duration: 70000}
+					{name: 'Drummer Boy', duration: 120} , 
+					{name: 'Jingle Bells', duration: 240}, 
+					{name: 'White Christmas', duration: 480}
 				]
 			},
 			{
-				name: 'Another Playlist - the best!',
+				name: 'Workout',
 				songs: [
-					{name: 'Beat It', duration: 1345} , 
-					{name: 'Cannelloni Makaroni', duration: 1236}, 
-					{name: 'Rosa helikopter', duration: 70000}
+					{name: 'Drummer Boy', duration: 120} , 
+					{name: 'Jingle Bells', duration: 240}, 
+					{name: 'White Christmas', duration: 480}
 				]
 			},
 			{
-				name: 'Playlist - yeah!',
+				name: 'Party',
 				songs: [
-					{name: 'Beat It', duration: 1345} , 
-					{name: 'Cannelloni Makaroni', duration: 1236}, 
-					{name: 'Rosa helikopter', duration: 70000}
+					{name: 'Drummer Boy', duration: 120} , 
+					{name: 'Jingle Bells', duration: 240}, 
+					{name: 'White Christmas', duration: 480}
 				]
-			},
+			}
 		]
 	}
 };
@@ -108,10 +109,17 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		// let parsed = queryString.parse(window.location.search);
+		// console.log(parsed);
+		// let accessToken = parsed.access_token;
+		// console.log(accessToken);
+
+		// fetch('https://api.spotify.com/v1/me', {
+		// 	headers : {'Authorization' : 'Bearer' + accessToken}
+		// }).then(response => response.json())
+
 		setTimeout(() => {
-			this.setState({
-				serverData: fakeServerData
-			});
+			this.setState({serverData : fakeServerData});
 		}, 1000);
 	}
 
@@ -135,7 +143,10 @@ class App extends Component {
 							return <Playlist playlist={playlist}/>
 						})
 					}
-				</div> : <h1>Loading...</h1>
+				</div> : 
+					<h1>Loading...</h1>
+					// <button onClick={() => window.location = 'http://localhost:8888/login'}
+					// style={{padding: '20px', 'fontSize': '50px'}}>Sign in with Spotify</button>
 				}
 			</div>
 		);
