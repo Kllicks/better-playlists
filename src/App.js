@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import queryString from'query-string';
+// import queryString from'query-string';
 
 let fakeServerData = {
 	user: {
@@ -23,7 +23,7 @@ let fakeServerData = {
 				]
 			},
 			{
-				name: 'Workout',
+				name: 'Christmas',
 				songs: [
 					{name: 'Drummer Boy', duration: 120} , 
 					{name: 'Jingle Bells', duration: 240}, 
@@ -62,7 +62,7 @@ class HoursCounter extends Component {
 		}, 0);
 		return (
 			<div style={{width: '40%', display: 'inline-block'}}>
-				<h2>{Math.round(totalDuration/60)} Hours</h2>
+				<h2>{Math.round(totalDuration/60)} Minutes</h2>
 			</div>
 		);
 	}
@@ -72,7 +72,7 @@ class Filter extends Component {
 	render() {
 		return (
 			<div>
-				<img/>
+				{/* <img/> */}
 				<input type='text' onKeyUp={event => 
 					this.props.onTextChange(event.target.value)}/>
 			</div>
@@ -85,7 +85,7 @@ class Playlist extends Component {
 		let playlist = this.props.playlist;
 		return(
 			<div style={{width: '25%', display: 'inline-block'}}>
-				<img/>
+				{/* <img/> */}
 				<h3>{playlist.name}</h3>
 				<ul>
 					{
@@ -109,14 +109,15 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		// let parsed = queryString.parse(window.location.search);
-		// console.log(parsed);
-		// let accessToken = parsed.access_token;
-		// console.log(accessToken);
+		let hash = window.location.hash.substr(1);
+		console.log(hash);
+		let arHash = hash.split('access_token=');
+		let accessToken = arHash[1];
+		console.log(accessToken);
 
-		// fetch('https://api.spotify.com/v1/me', {
-		// 	headers : {'Authorization' : 'Bearer' + accessToken}
-		// }).then(response => response.json())
+		fetch('https://api.spotify.com/v1/me', {headers : {'Authorization': 'Bearer ' + accessToken}})
+			.then(response => response.json())
+			.then(data => console.log(data))
 
 		setTimeout(() => {
 			this.setState({serverData : fakeServerData});
@@ -127,7 +128,7 @@ class App extends Component {
 		let playlistToRender = this.state.serverData.user ? this.state.serverData.user.playlists.filter((playlist) => { 
 			return playlist.name.toLowerCase().includes(
 				this.state.filterString.toLowerCase())
-		}) : []
+		}) : [];
 		return (
 			<div className="App">
 				{this.state.serverData.user ? 
@@ -144,9 +145,9 @@ class App extends Component {
 						})
 					}
 				</div> : 
-					<h1>Loading...</h1>
-					// <button onClick={() => window.location = 'http://localhost:8888/login'}
-					// style={{padding: '20px', 'fontSize': '50px'}}>Sign in with Spotify</button>
+					// <h1>Loading...</h1>
+					<button onClick={() => window.location = 'http://localhost:8888/login'}
+					style={{padding: '20px', 'fontSize': '50px'}}>Sign in with Spotify</button>
 				}
 			</div>
 		);
