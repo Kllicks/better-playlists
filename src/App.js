@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import './App.css';
 // import queryString from'query-string';
 
-let fakeServerData = {
-	user: {
-		name: 'Kyle',
-		playlists: [
-			{
-				name: 'My Favorites',
-				songs: [
-					{name: 'Drummer Boy', duration: 120} , 
-					{name: 'Jingle Bells', duration: 240}, 
-					{name: 'White Christmas', duration: 480}
-				]
-			}
-		]
-	}
-};
+// let fakeServerData = {
+// 	user: {
+// 		name: 'Kyle',
+// 		playlists: [
+// 			{
+// 				name: 'My Favorites',
+// 				songs: [
+// 					{name: 'Drummer Boy', duration: 120} , 
+// 					{name: 'Jingle Bells', duration: 240}, 
+// 					{name: 'White Christmas', duration: 480}
+// 				]
+// 			}
+// 		]
+// 	}
+// };
 
 class PlaylistCounter extends Component {
 	render () {
