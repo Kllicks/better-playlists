@@ -12,3 +12,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.playlist {
+  margin: 15px;
+  border-bottom: solid black 4px;
+}
+
+.playlistCounter {
+  border-bottom: solid black 10px;
+}
+
+.hoursCounter {
+  border-bottom: solid black 10px;
+}
+
+h1 {
+  font-family: OCR A Std, monospace;
+  font-size: 50px;
+}
