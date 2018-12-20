@@ -38,7 +38,7 @@ class HoursCounter extends Component {
 		}, 0);
 		return (
 			<div style={{width: '40%', display: 'inline-block'}}>
-				<h2>{Math.round(totalDuration/60)} Minutes</h2>
+				<h2>{Math.round(totalDuration/60)} Hours</h2>
 			</div>
 		);
 	}
@@ -90,6 +90,9 @@ class App extends Component {
 		let arHash = hash.split('access_token=');
 		let accessToken = arHash[1];
 		console.log(accessToken);
+
+		if (!accessToken)
+			return;
 		
 		//fetch current user
 		fetch('https://api.spotify.com/v1/me', {headers : {'Authorization': 'Bearer ' + accessToken}})
@@ -103,13 +106,37 @@ class App extends Component {
 		// fetch playlist of current user
 		fetch('https://api.spotify.com/v1/me/playlists', {headers : {'Authorization': 'Bearer ' + accessToken}})
 			.then(response => response.json())
-			.then(data => this.setState({
-				playlists: data.items.map(item => {
-					console.log(data.items);
+			.then(playlistData => {
+				let playlists = playlistData.items;
+				let trackDataPromises = playlists.map(playlist => {
+					let responsePromise = fetch(playlist.tracks.href, {headers : {'Authorization': 'Bearer ' + accessToken}
+					});
+					let trackDataPromise = responsePromise
+						.then(response => response.json())
+					return trackDataPromise;
+				})
+				let allTrackDataPromises = Promise.all(trackDataPromises);
+				let playlistsPromise = allTrackDataPromises
+					.then(trackDatas => {
+						trackDatas.forEach((trackData, i) => {
+							playlists[i].trackDatas = trackData.items
+							.map(item => item.track)
+							.map(trackData => ({
+								name: trackData.name,
+								duration: trackData.duration_ms / 1000
+							}))
+						})
+						return playlists;
+					})
+					return playlistsPromise;
+			})
+			.then(playlists => this.setState({
+				playlists: playlists.map(item => {
+					console.log(item.trackDatas);
 					return {
 						name: item.name,
 						imageUrl: item.images[0].url,
-						songs: []
+						songs: item.trackDatas.slice(0,3)
 					}
 			})
 			}));
@@ -144,7 +171,11 @@ class App extends Component {
 					}
 				</div> : 
 					// <h1>Loading...</h1>
-					<button onClick={() => window.location = 'http://localhost:8888/login'}
+					<button onClick={() => {
+						window.location = window.location.href.includes('localhost')
+						? 'http://localhost:8888/login'
+						: 'https://www.spotify.com/'}
+					}
 					style={{padding: '20px', 'fontSize': '50px'}}>Sign in with Spotify</button>
 				}
 			</div>
