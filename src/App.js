@@ -119,9 +119,9 @@ class App extends Component {
 			.then(response => response.json())
 			.then(data => console.log(data))
 
-		setTimeout(() => {
-			this.setState({serverData : fakeServerData});
-		}, 1000);
+		// setTimeout(() => {
+		// 	this.setState({serverData : fakeServerData});
+		// }, 1000);
 	}
 
 	render() {
