@@ -13,30 +13,6 @@ let fakeServerData = {
 					{name: 'Jingle Bells', duration: 240}, 
 					{name: 'White Christmas', duration: 480}
 				]
-			},
-			{
-				name: 'Top',
-				songs: [
-					{name: 'Drummer Boy', duration: 120} , 
-					{name: 'Jingle Bells', duration: 240}, 
-					{name: 'White Christmas', duration: 480}
-				]
-			},
-			{
-				name: 'Christmas',
-				songs: [
-					{name: 'Drummer Boy', duration: 120} , 
-					{name: 'Jingle Bells', duration: 240}, 
-					{name: 'White Christmas', duration: 480}
-				]
-			},
-			{
-				name: 'Party',
-				songs: [
-					{name: 'Drummer Boy', duration: 120} , 
-					{name: 'Jingle Bells', duration: 240}, 
-					{name: 'White Christmas', duration: 480}
-				]
 			}
 		]
 	}
@@ -85,7 +61,7 @@ class Playlist extends Component {
 		let playlist = this.props.playlist;
 		return(
 			<div style={{width: '25%', display: 'inline-block'}}>
-				{/* <img/> */}
+				<img src={playlist.imageUrl} alt='album cover' style={{width: '60px'}}/>
 				<h3>{playlist.name}</h3>
 				<ul>
 					{
@@ -109,32 +85,54 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		//save access token + refresh token
 		let hash = window.location.hash.substr(1);
-		console.log(hash);
 		let arHash = hash.split('access_token=');
 		let accessToken = arHash[1];
 		console.log(accessToken);
-
+		
+		//fetch current user
 		fetch('https://api.spotify.com/v1/me', {headers : {'Authorization': 'Bearer ' + accessToken}})
 			.then(response => response.json())
-			.then(data => console.log(data))
+			.then(data => this.setState({
+				user: {
+					name: data.display_name
+				}
+			}));
+		
+		// fetch playlist of current user
+		fetch('https://api.spotify.com/v1/me/playlists', {headers : {'Authorization': 'Bearer ' + accessToken}})
+			.then(response => response.json())
+			.then(data => this.setState({
+				playlists: data.items.map(item => {
+					console.log(data.items);
+					return {
+						name: item.name,
+						imageUrl: item.images[0].url,
+						songs: []
+					}
+			})
+			}));
 
-		setTimeout(() => {
-			this.setState({serverData : fakeServerData});
-		}, 1000);
+		// setTimeout(() => {
+		// 	this.setState({serverData : fakeServerData});
+		// }, 1000);
 	}
 
 	render() {
-		let playlistToRender = this.state.serverData.user ? this.state.serverData.user.playlists.filter((playlist) => { 
-			return playlist.name.toLowerCase().includes(
-				this.state.filterString.toLowerCase())
+		let playlistToRender = 
+			this.state.user && 
+			this.state.playlists 
+			? this.state.playlists.filter((playlist) => { 
+				return playlist.name.toLowerCase().includes(
+					this.state.filterString.toLowerCase())
 		}) : [];
 		return (
 			<div className="App">
-				{this.state.serverData.user ? 
+				{this.state.user ? 
 				<div>
 					<h1>
-						{this.state.serverData.user.name}'s Playlists
+						{this.state.user.name}'s Playlists
 					</h1>
 					<PlaylistCounter playlists={playlistToRender}/>
 					<HoursCounter playlists={playlistToRender}/>
