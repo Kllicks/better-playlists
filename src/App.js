@@ -35,9 +35,11 @@ class App extends Component {
 		// fetch playlist of current user
 		fetch('https://api.spotify.com/v1/me/playlists', {headers : {'Authorization': 'Bearer ' + accessToken}})
 			.then(response => response.json())
+			// Get playlist info
 			.then(playlistData => {
 				let playlists = playlistData.items;
 				let trackDataPromises = playlists.map(playlist => {
+					// Also grab playlist image
 					let responsePromise = fetch(playlist.tracks.href, {headers : {'Authorization': 'Bearer ' + accessToken}
 					});
 					let trackDataPromise = responsePromise
@@ -45,6 +47,7 @@ class App extends Component {
 					return trackDataPromise;
 				})
 				let allTrackDataPromises = Promise.all(trackDataPromises);
+				// Grab all the songs and their durations
 				let playlistsPromise = allTrackDataPromises
 					.then(trackDatas => {
 						trackDatas.forEach((trackData, i) => {
@@ -59,6 +62,7 @@ class App extends Component {
 					})
 					return playlistsPromise;
 			})
+			// set state with playlists, image, and the first 3 songs
 			.then(playlists => this.setState({
 				playlists: playlists.map(item => {
 					return {
@@ -71,6 +75,7 @@ class App extends Component {
 	}
 
 	render() {
+		// if a user exists and has playlists match playlists and songs to the filterString
 		let playlistToRender = 
 			this.state.user && 
 			this.state.playlists 
