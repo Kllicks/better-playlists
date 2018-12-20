@@ -1,79 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-// import queryString from'query-string';
-
-// let fakeServerData = {
-// 	user: {
-// 		name: 'Kyle',
-// 		playlists: [
-// 			{
-// 				name: 'My Favorites',
-// 				songs: [
-// 					{name: 'Drummer Boy', duration: 120} , 
-// 					{name: 'Jingle Bells', duration: 240}, 
-// 					{name: 'White Christmas', duration: 480}
-// 				]
-// 			}
-// 		]
-// 	}
-// };
-
-class PlaylistCounter extends Component {
-	render () {
-		return (
-			<div style={{width: '40%', display: 'inline-block'}}>
-				<h2>{this.props.playlists.length} Playlists</h2>
-			</div>
-		);
-	}
-}
-
-class HoursCounter extends Component {
-	render () {
-		let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
-			return songs.concat(eachPlaylist.songs);
-		}, []);
-		let totalDuration = allSongs.reduce((sum, eachSong) => {
-			return sum + eachSong.duration;
-		}, 0);
-		return (
-			<div style={{width: '40%', display: 'inline-block'}}>
-				<h2>{Math.round(totalDuration/60)} Hours</h2>
-			</div>
-		);
-	}
-}
-
-class Filter extends Component {
-	render() {
-		return (
-			<div>
-				{/* <img/> */}
-				<input type='text' onKeyUp={event => 
-					this.props.onTextChange(event.target.value)}/>
-			</div>
-		);
-	}
-}
-
-class Playlist extends Component {
-	render() {
-		let playlist = this.props.playlist;
-		return(
-			<div style={{width: '25%', display: 'inline-block'}}>
-				<img src={playlist.imageUrl} alt='album cover' style={{width: '60px'}}/>
-				<h3>{playlist.name}</h3>
-				<ul>
-					{
-						playlist.songs.map((song) => {
-							return <li>{song.name}</li>
-						})
-					}
-				</ul>
-			</div>
-		);
-	}
-}
+import Playlist from './Playlist';
+import Filter from './Filter';
+import HoursCounter from './HoursCounter';
+import PlaylistCounter from './PlaylistCounter';
 
 class App extends Component {
 	constructor() {
@@ -89,7 +19,6 @@ class App extends Component {
 		let hash = window.location.hash.substr(1);
 		let arHash = hash.split('access_token=');
 		let accessToken = arHash[1];
-		// console.log(accessToken);
 
 		if (!accessToken)
 			return;
@@ -132,7 +61,6 @@ class App extends Component {
 			})
 			.then(playlists => this.setState({
 				playlists: playlists.map(item => {
-					// console.log(item.trackDatas);
 					return {
 						name: item.name,
 						imageUrl: item.images[0].url,
@@ -140,10 +68,6 @@ class App extends Component {
 					}
 			})
 			}));
-
-		// setTimeout(() => {
-		// 	this.setState({serverData : fakeServerData});
-		// }, 1000);
 	}
 
 	render() {
@@ -173,13 +97,12 @@ class App extends Component {
 						})
 					}
 				</div> : 
-					// <h1>Loading...</h1>
 					<button onClick={() => {
 						window.location = window.location.href.includes('localhost')
 						? 'http://localhost:8888/login'
 						: 'https://www.spotify.com/'}
 					}
-					style={{padding: '20px', 'fontSize': '50px'}}>Sign in with Spotify</button>
+					className='OathButton'>Sign in with Spotify</button>
 				}
 			</div>
 		);
