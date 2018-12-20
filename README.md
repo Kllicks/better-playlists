@@ -1,3 +1,62 @@
+## Overview: 
+
+This React app is meant only to practice using React principles. After doing a walkthrough using the Spotify API to show a user's currently playing song we decided to create a page that shows all a user's playlists. You will also be able to filter by song or playlist name to find a particular playlist. 
+
+### Features: 
+
+- Grabs the current user data after Oauth login
+- Pulls that users playlists and the songs for that particular playlist
+- Shows all the playlists on screen before any filtering
+- Filter will show only a playlist containing that song or playlist string
+- The minutes and playlist counter will change and show currently displayed information
+
+## Github Link: [SpotifyReactPlaylists!](https://github.com/Kllicks/better-playlists)
+
+## Team Members & Roles:
+*Click on each member's name to see their GitHub profile*
+
+All team members are students in the [Digital Crafts](https://www.digitalcrafts.com/) September 2018 cohort. This first project applied agile principles to get a MVP completed in a relatively short timeframe.
+
+- [Kyle Sekellick](https://github.com/Kllicks)
+- [Evan Procter](https://github.com/evanprocter)
+
+## Tools and Technologies
+
+**Languages/Frameworks/Libraries:**
+- HTML5
+- CSS
+- JavaScript
+- Node.js
+- React
+
+**API's**
+- Spotify API
+
+## MVP (Minimum Viable Product):
+- 
+
+**Stretch Goals**
+
+
+## Challenges & Solutions:
+**Some of the biggest challenges we faced with this project build indluded:**
+
+  1. **Challenge:** 
+
+    Solution: 
+
+  2. **Challenge:** 
+
+    Solution: 
+
+  3. **Challenge:** 
+
+    Solution:
+
+## Screenshots or GIF
+
+----------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
